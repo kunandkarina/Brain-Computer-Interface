@@ -34,7 +34,7 @@ def main():
     root = BasicRecv(4, selcStream.srate) #############
 
     # block1 = PreProcessing(2, 40, selcStream.srate, 128.0, parent=root) # 1, 40
-    block1 = PreProcessing(8, 12, selcStream.srate, 128.0, parent=root)
+    block1 = PreProcessing(8, 13, selcStream.srate, 128.0, parent=root)
 
     # block2 = ChannelNorm(128.0, parent=block1)
     # block3 = CLEEGNing(
@@ -62,6 +62,9 @@ def main():
         print(chunk_1)
         alpha_power = np.mean(chunk_1, axis=1)
         print(f'Alpha power: {alpha_power}')
+
+        mean_alpha_power = np.mean(alpha_power)
+        print(f'Mean alpha power: {mean_alpha_power}')
 
 if __name__ == "__main__":
     main()
