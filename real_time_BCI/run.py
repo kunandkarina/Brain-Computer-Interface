@@ -36,13 +36,6 @@ def main():
     # block1 = PreProcessing(2, 40, selcStream.srate, 128.0, parent=root) # 1, 40
     block1 = PreProcessing(8, 13, selcStream.srate, 128.0, parent=root)
 
-    # block2 = ChannelNorm(128.0, parent=block1)
-    # block3 = CLEEGNing(
-    #     ".temp/biosemi.pth", sfreq_OS=128.0, parent=block2
-    # )
-    # cleegn_ssvep_2023/S011.pth models/BCI-ERN_test.pth
-    # models/valid-0.pth
-
     while True:
         pull_kwargs = {"timeout": 1, "max_samples": math.ceil(0.6 * selcStream.srate)}
         chunk, timestamps = inlet.pull_chunk(**pull_kwargs)
@@ -58,13 +51,26 @@ def main():
         chunk_1 = block1.step()
         block1.update(chunk_1)
         # Filter data
+        # ---------------Method 1----------------
         print("Filtered data: ")
-        print(chunk_1)
-        alpha_power = np.mean(chunk_1, axis=1)
+        min_value = np.min(chunk_1, axis=1)
+        shift_chunk = chunk_1 - min_value[:, np.newaxis]
+        alpha_power = np.mean(shift_chunk, axis=1)
         print(f'Alpha power: {alpha_power}')
+        # ---------------Method 1----------------
 
-        mean_alpha_power = np.mean(alpha_power)
-        print(f'Mean alpha power: {mean_alpha_power}')
+        # ---------------Method 2----------------
+        print("Filtered data: ")
+        shift_chunk = np.power(chunk_1, 2)
+        alpha_power = np.mean(shift_chunk, axis=1)
+        print(f'Alpha power: {alpha_power}')
+        # ---------------Method 2----------------
+
+        # ---------------Method 3----------------
+        print("Filtered data: ")
+        tmp_chunk = chunk_1[3]
+        
+
 
 if __name__ == "__main__":
     main()
