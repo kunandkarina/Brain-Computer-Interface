@@ -83,6 +83,8 @@ def main():
         win = 0.25 * 128
         f, psd = signal.welch(tmp_chunk, fs=128.0, nperseg=win)
         f_res = f[1] - f[0]
+        # idx_alpha = np.logical_and(f >= 8, f <= 13)
+        # alpha_power = simps(psd[idx_alpha], dx=f_res)
         alpha_power = simps(psd[(f >= 8) & (f <= 13)], dx=f_res)
         print(f'Alpha power: {alpha_power}')
         # ---------------Method 3----------------
