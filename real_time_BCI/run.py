@@ -9,6 +9,8 @@ from custom import CLEEGNing
 
 import prettytable as pt
 from scipy.io import savemat
+from scipy import signal
+from scipy.integrate import simps
 import numpy as np
 import pylsl
 import math
@@ -60,15 +62,30 @@ def main():
         # ---------------Method 1----------------
 
         # ---------------Method 2----------------
-        print("Filtered data: ")
-        shift_chunk = np.power(chunk_1, 2)
-        alpha_power = np.mean(shift_chunk, axis=1)
-        print(f'Alpha power: {alpha_power}')
+        # print("Filtered data: ")
+        # shift_chunk = np.power(chunk_1, 2)
+        # alpha_power = np.mean(shift_chunk, axis=1)
+        # print(f'Alpha power: {alpha_power}')
+
+        print("Filter data: ")
+        shift_chunk = np.fft.fft(chunk_1, axis=1)
+        shift_chunk = np.power(shift_chunk, 2)
+        shift_chunk = np.mean(shift_chunk, axis=1)
+        print(f'Alpha power: {shift_chunk}')
+
+
         # ---------------Method 2----------------
 
         # ---------------Method 3----------------
         print("Filtered data: ")
         tmp_chunk = chunk_1[3]
+        # apply Welch method
+        win = 0.25 * 128
+        f, psd = signal.welch(tmp_chunk, fs=128.0, nperseg=win)
+        f_res = f[1] - f[0]
+        alpha_power = simps(psd[(f >= 8) & (f <= 13)], dx=f_res)
+        print(f'Alpha power: {alpha_power}')
+        # ---------------Method 3----------------
         
 
 
