@@ -54,11 +54,11 @@ def main():
         block1.update(chunk_1)
         # Filter data
         # ---------------Method 1----------------
-        print("Filtered data: ")
-        min_value = np.min(chunk_1, axis=1)
-        shift_chunk = chunk_1 - min_value[:, np.newaxis]
-        alpha_power = np.mean(shift_chunk, axis=1)
-        print(f'Alpha power: {alpha_power}')
+        # print("Filtered data: ")
+        # min_value = np.min(chunk_1, axis=1)
+        # shift_chunk = chunk_1 - min_value[:, np.newaxis]
+        # alpha_power = np.mean(shift_chunk, axis=1)
+        # print(f'Alpha power: {alpha_power}')
         # ---------------Method 1----------------
 
         # ---------------Method 2----------------
@@ -67,11 +67,11 @@ def main():
         # alpha_power = np.mean(shift_chunk, axis=1)
         # print(f'Alpha power: {alpha_power}')
 
-        print("Filter data: ")
-        shift_chunk = np.fft.fft(chunk_1, axis=1)
-        shift_chunk = np.power(shift_chunk, 2)
-        shift_chunk = np.mean(shift_chunk, axis=1)
-        print(f'Alpha power: {shift_chunk}')
+        # print("Filter data: ")
+        # shift_chunk = np.fft.fft(chunk_1, axis=1)
+        # shift_chunk = np.power(shift_chunk, 2)
+        # shift_chunk = np.mean(shift_chunk, axis=1)
+        # print(f'Alpha power: {shift_chunk}')
 
 
         # ---------------Method 2----------------
