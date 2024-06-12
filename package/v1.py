@@ -11,6 +11,7 @@ from adaptive import kmeans
 qsize = 30
 kmeans_model = None
 avg_thres = 0
+auto = False
 
 def main():
     # import argparse
@@ -42,24 +43,32 @@ def main():
 
             ratio = sum(list(q.queue)) / q.qsize()
             end = monotonic()
-            if not collect_data:
-                Thres.append(ratio)
-                Time.append(end - start)
-            print(f"time:  {end - start} ratio: {ratio}")
-            if end - start > 30 and not collect_data: # 0~30s: collect data and calculate average threshold
-                avg_thres = kmeans(np.array(Thres), np.array(Time))
-                print("Average Threshold:", avg_thres)
-                collect_data = True
-                
-        #-----------------open eyes to move forward, closed eyes to stop----------------- 
-            if collect_data:
-                if ratio < avg_thres and q.qsize() == qsize:
+
+            if auto:
+                if not collect_data:
+                    Thres.append(ratio)
+                    Time.append(end - start)
+                print(f"time:  {end - start} ratio: {ratio}")
+                if end - start > 30 and not collect_data: # 0~30s: collect data and calculate average threshold
+                    avg_thres = kmeans(np.array(Thres), np.array(Time))
+                    print("Average Threshold:", avg_thres)
+                    collect_data = True
+            #-----------------open eyes to move forward, closed eyes to stop----------------- 
+                if collect_data:
+                    if ratio < avg_thres and q.qsize() == qsize:
+                        print("move forward", ratio)
+                        # ser.write(b'1')
+                    else:
+                        print("stop ", ratio)
+                        # ser.write(b'0')
+            # ------------------------------------------------------------------------------
+            else:
+                if ratio > thres and q.qsize() == qsize:
                     print("move forward", ratio)
-                    # ser.write(b'1')
+                    ser.write(b'1')
                 else:
                     print("stop ", ratio)
-                    # ser.write(b'0')
-        # ------------------------------------------------------------------------------
+                    ser.write(b'0')
         time.sleep(0.2)
    
 if __name__ == '__main__':
