@@ -8,3 +8,9 @@
 <div align="center">
   <img src="./assets/pipeline.png" width=600>
 </div>
+
+
+
+## Results
+### Kmeans
+<img src="./assets/kmeans_feature.png" width=450>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="./assets/kmeans_windows15.png" width=450>
