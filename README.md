@@ -19,7 +19,7 @@ Our pipeline consists of three main parts:
 ## Results
 ### Kmeans
 <div align="center">
-  <img src="./assets/kmeans_feature.png" width=450>
-  <img src="./assets/kmeans_windows15.png" width=450>
+  <img src="./assets/kmeans_feature.png" width=420>
+  <img src="./assets/kmeans_windows15.png" width=420>
 </div>
 
